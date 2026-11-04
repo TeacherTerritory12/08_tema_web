@@ -3,42 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест: Створення веб-ресурсів | 8 клас НУШ</title>
+    <title>Квест: Створення та публікація веб-ресурсів</title>
     <style>
         :root {
-            --primary: #4a6fa5;
-            --success: #2ec4b6;
-            --error: #e71d36;
-            --background: #f8f9fa;
-            --text: #2b2d42;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 90vh;
+            padding: 20px;
         }
         .quiz-card {
-            background: #ffffff;
-            max-width: 600px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            max-width: 650px;
             width: 100%;
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .quiz-header h1 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+        .quiz-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            border-color: var(--primary);
         }
         .progress-container {
             width: 100%;
-            background: #eef1f6;
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 25px;
+            background: #0f172a;
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 30px;
             overflow: hidden;
+            display: none;
         }
         .progress-bar {
             height: 100%;
@@ -47,9 +93,9 @@
             transition: width 0.3s ease;
         }
         h2 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: #1d3557;
+            font-size: 1.25rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
         .options {
             display: flex;
@@ -57,222 +103,310 @@
             gap: 12px;
         }
         .option-btn {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            padding: 14px 20px;
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            padding: 16px 20px;
             border-radius: 10px;
             text-align: left;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: var(--text);
+            color: var(--text-main);
         }
         .option-btn:hover:not(:disabled) {
             border-color: var(--primary);
-            background-color: #f0f4f8;
+            background-color: #1e293b;
         }
         .option-btn:disabled {
             cursor: not-allowed;
         }
         .option-btn.correct {
-            background-color: #d4edda !important;
+            background-color: rgba(16, 185, 129, 0.15) !important;
             border-color: var(--success) !important;
-            color: #155724;
+            color: #34d399;
             font-weight: bold;
         }
         .option-btn.wrong {
-            background-color: #f8d7da !important;
+            background-color: rgba(239, 68, 68, 0.15) !important;
             border-color: var(--error) !important;
-            color: #721c24;
+            color: #f87171;
         }
-        #next-btn {
-            margin-top: 20px;
+        .main-btn {
+            margin-top: 25px;
             width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
+            padding: 14px;
+            background-color: var(--primary);
+            color: #0f172a;
             border: none;
             border-radius: 10px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            display: none;
+            transition: background-color 0.2s;
         }
-        #next-btn:hover {
-            background: #3b5c88;
+        .main-btn:hover {
+            background-color: var(--primary-hover);
         }
         .result-screen {
             text-align: center;
         }
         .score-badge {
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: bold;
             color: var(--primary);
             margin: 20px 0;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
-        .restart-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
+        .analysis-container {
+            text-align: left;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            max-height: 350px;
+            overflow-y: auto;
         }
-        .restart-btn:hover {
-            background: #cbd5e1;
+        .analysis-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #0f172a;
+            border-left: 4px solid #475569;
+        }
+        .analysis-item.correct-item {
+            border-left-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .analysis-item.wrong-item {
+            border-left-color: var(--error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .analysis-q {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .analysis-ans {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-line-height: 1.4;
+        }
+        .analysis-ans strong {
+            color: #34d399;
         }
     </style>
 </head>
 <body>
 
 <div class="quiz-card" id="quiz">
-    <div class="progress-container">
+    <div class="progress-container" id="progress-area">
         <div class="progress-bar" id="progress"></div>
     </div>
+    
     <div id="quiz-content">
-        <h2 id="question-text">Завантаження питання...</h2>
-        <div class="options" id="options-container"></div>
-        <button id="next-btn" onclick="nextQuestion()">Далі →</button>
+        <!-- Стартовий екран реєстрації імені -->
+        <div class="quiz-header">
+            <h1>Квест: Опрацювання текстових даних</h1>
+            <p>Й. Ривкінд, НУШ 8 клас • Тема: Створення та публікація веб-ресурсів</p>
+        </div>
+        <div class="input-group">
+            <label for="student-name">Введіть ваше Прізвище та Ім'я (українською мовою):</label>
+            <input type="text" id="student-name" placeholder="Наприклад: Шевченко Тарас">
+        </div>
+        <button class="main-btn" onclick="validateAndStart()">Розпочати квест</button>
     </div>
 </div>
 
 <script>
+    // НАЛАШТУВАННЯ GOOGLE ФОРМИ (Вставте свої значення сюди)
+    const GOOGLE_FORM_URL = "https://google.com"; 
+    const NAME_ENTRY_ID = "entry.111111111";   // ID поля для Імені
+    const SCORE_ENTRY_ID = "entry.222222222";  // ID поля для Оцінки
+
     const quizData = [
         {
-            question: "Що таке HTML?",
+            question: "Що таке веб-сайт?",
             answers: [
+                { text: "Сукупність веб-сторінок, пов'язаних за змістом та навігацією", correct: true },
+                { text: "Будь-який текстовий документ, створений на комп'ютері", correct: false },
+                { text: "Програма для перегляду сторінок в Інтернеті", correct: false }
+            ]
+        },
+        {
+            question: "Як називається комп'ютер, що постійно підключений до мережі та зберігає файли веб-сайту?",
+            answers: [
+                { text: "Браузер", correct: false },
+                { text: "Провайдер", correct: false },
+                { text: "Хост / Веб-сервер", correct: true }
+            ]
+        },
+        {
+            question: "Яка технологія ховається за абревіатурою HTML?",
+            answers: [
+                { text: "Мова програмування для серверних обчислень", correct: false },
                 { text: "Мова розмітки гіпертексту", correct: true },
-                { text: "Мова програмування для розрахунків", correct: false },
-                { text: "Графічний редактор для веб-дизайну", correct: false }
+                { text: "Протокол безпечного передавання даних", correct: false }
             ]
         },
         {
-            question: "За допомогою яких символів записуються теги в коді HTML?",
+            question: "За допомогою яких символів у HTML записуються команди (теги)?",
             answers: [
+                { text: "&lt; та &gt; (кутові дужки)", correct: true },
                 { text: "{ та } (фігурні дужки)", correct: false },
-                { text: "[ та ] (квадратні дужки)", correct: false },
-                { text: "&lt; та &gt; (кутові дужки)", correct: true }
+                { text: "[ та ] (квадратні дужки)", correct: false }
             ]
         },
         {
-            question: "Який тег використовується для створення нового абзацу на веб-сторінці?",
+            question: "Який тег є головним контейнером, всередині якого розміщується весь вміст веб-сторінки?",
             answers: [
-                { text: "&lt;p&gt;", correct: true },
-                { text: "&lt;br&gt;", correct: false },
+                { text: "&lt;head&gt;", correct: false },
+                { text: "&lt;html&gt;", correct: true },
                 { text: "&lt;title&gt;", correct: false }
             ]
         },
         {
-            question: "Який сервіс дозволяє безкоштовно створювати сайти без знання програмування у візуальному конструкторі?",
+            question: "Який тег використовується для відображення основного видимого вмісту сторінки (текст, графіка)?",
             answers: [
-                { text: "Google Диск", correct: false },
-                { text: "Google Сайти (Google Sites)", correct: true },
-                { text: "Google Форми", correct: false }
+                { text: "&lt;body&gt;", correct: true },
+                { text: "&lt;head&gt;", correct: false },
+                { text: "&lt;meta&gt;", correct: false }
             ]
         },
         {
-            question: "Який тег є обов'язковим парним тегом контейнера всього HTML-документа?",
+            question: "Який тег відповідає за створення нового абзацу тексту?",
             answers: [
-                { text: "&lt;body&gt;", correct: false },
-                { text: "&lt;html&gt;", correct: true },
-                { text: "&lt;head&gt;", correct: false }
+                { text: "&lt;br&gt;", correct: false },
+                { text: "&lt;h1&gt;", correct: false },
+                { text: "&lt;p&gt;", correct: true }
             ]
-        }
-    ];
+        },
+        {
+            question: "За допомогою якого тегу можна вставити гіперпосилання на інший ресурс?",
+            answers: [
+                { text: "&lt;a&gt;", correct: true },
+                { text: "&lt;link&gt;", correct: false },
+                { text: "&lt;img&gt;", correct: false }
+            ]
+        },
+        {
+            question: "Яка послуга надає користувачам місце на сервері для розміщення їхніх сайтів?",
+            answers: [
+                { text: "Домен", correct: false },
+                { text: "Хостинг", correct: true },
+                { text: "Адресація", correct: false }
+            ]
+        },
+        {
+question: "Унікальне ім'я сайту в Інтернеті (наприклад, google.com) — це...",
+answers: [
+{ text: "Доменне ім'я", correct: true },
+{ text: "Веб-сторінка", correct: false },
+{ text: "URL-адреса файлу", correct: false }
+]
+},
+{
+question: "Яку назву має перший етап створення веб-сайту?",
+answers: [
+{ text: "Публікація сайту", correct: false },
+{ text: "Верстка сторінок", correct: false },
+{ text: "Постановка завдання та проєктування (планування)", correct: true }
+]
+},
+{
+question: "Який із сервісів є прикладом онлайн-конструктора сайтів (CMS без коду)?",
+answers: [
+{ text: "Google Сайти (Google Sites)", correct: true },
+{ text: "Google Диск", correct: false },
+{ text: "Google Клас", correct: false }
+]
+}
+];
+let studentName = "";
+let currentIdx = 0;
+let score = 0;
+let userAnswers = [];
+function validateAndStart() {
+const nameInput = document.getElementById("student-name");
+studentName = nameInput.value.trim();
+if (studentName.length < 3) {
+alert("Будь ласка, введіть коректне Прізвище та Ім'я!");
+return;
+}
+document.getElementById("progress-area").style.display = "block";
+showQuestion();
+}
+function showQuestion() {
+const container = document.getElementById("quiz-content");
+let currentQuestion = quizData[currentIdx];
+document.getElementById("progress").style.width = ${(currentIdx / quizData.length) * 100}%;
+let optionsHtml = "";
+currentQuestion.answers.forEach((answer, index) => {
+optionsHtml += <button class="option-btn" onclick="selectAnswer(this, ${answer.correct}, '${answer.text.replace(/'/g, "\\'")}')">${answer.text}</button>;
+});
+container.innerHTML = <h2>${currentIdx + 1}. ${currentQuestion.question}</h2> <div class="options">${optionsHtml}</div> <button id="next-btn" class="main-btn" style="display:none;" onclick="nextQuestion()">Далі →</button>;
+}
+function selectAnswer(btn, isCorrect, text) {
+userAnswers.push({
+question: quizData[currentIdx].question,
+selected: text,
+correctAnswer: quizData[currentIdx].answers.find(a => a.correct).text,
+isCorrect: isCorrect
+});
+if (isCorrect) {
+btn.classList.add("correct");
+score++;
+} else {
+btn.classList.add("wrong");
+}
+const options = document.querySelectorAll(".option-btn");
+options.forEach(button => {
+button.disabled = true;
+// Показуємо правильний варіант, якщо учень помилився
+if (button.textContent === quizData[currentIdx].answers.find(a => a.correct).text) {
+button.classList.add("correct");
+}
+});
+document.getElementById("next-btn").style.display = "block";
+}
+function nextQuestion() {
+currentIdx++;
+if (currentIdx < quizData.length) {
+showQuestion();
+} else {
+showResults();
+}
+}
+function sendToGoogleSheets(name, finalScore) {
+// Приховане відправлення даних форми методом POST
+const formData = new FormData();
+formData.append(NAME_ENTRY_ID, name);
+formData.append(SCORE_ENTRY_ID, finalScore);
+fetch(GOOGLE_FORM_URL, {
+method: "POST",
+mode: "no-cors",
+body: formData
+}).catch(err => console.log("Data sent indicator"));
+}
+function showResults() {
+document.getElementById("progress").style.width = "100%";
+const container = document.getElementById("quiz-content");
+// Автоматичне збереження результатів у фоні
+sendToGoogleSheets(studentName, score);
+let analysisHtml = "";
+userAnswers.forEach((ans, idx) => {
+const statusClass = ans.isCorrect ? "correct-item" : "wrong-item";
+const statusIcon = ans.isCorrect ? "✅" : "❌";
+analysisHtml += <div class="analysis-item ${statusClass}"> <div class="analysis-q">${idx + 1}. ${ans.question}</div> <div class="analysis-ans"> Ваша відповідь: <span>${ans.selected}</span> ${statusIcon}<br> ${!ans.isCorrect ?Правильна відповідь: ${ans.correctAnswer}: ''} </div> </div>;
+});
+container.innerHTML = `
 
-    let currentIdx = 0;
-    let score = 0;
+Квест завершено, ${studentName}!
+Ваш результат успішно зафіксовано в системі.
+${score}
+Балів отримано (за 12-бальною системою НУШ)
+Аналіз помилок та відповідей:
 
-    const questionText = document.getElementById("question-text");
-    const optionsContainer = document.getElementById("options-container");
-    const nextBtn = document.getElementById("next-btn");
-    const progressBar = document.getElementById("progress");
+${analysisHtml}
+Пройти знову
 
-    function startQuiz() {
-        currentIdx = 0;
-        score = 0;
-        nextBtn.style.display = "none";
-        showQuestion();
-    }
-
-    function showQuestion() {
-        resetState();
-        let currentQuestion = quizData[currentIdx];
-        questionText.innerText = `${currentIdx + 1}. ${currentQuestion.question}`;
-        
-        // Оновлення прогрес-бару
-        progressBar.style.width = `${(currentIdx / quizData.length) * 100}%`;
-
-        currentQuestion.answers.forEach(answer => {
-            const button = document.createElement("button");
-            button.innerHTML = answer.text;
-            button.classList.add("option-btn");
-            if (answer.correct) {
-                button.dataset.correct = answer.correct;
-            }
-            button.addEventListener("click", selectAnswer);
-            optionsContainer.appendChild(button);
-        });
-    }
-
-    function resetState() {
-        nextBtn.style.display = "none";
-        while (optionsContainer.firstChild) {
-            optionsContainer.removeChild(optionsContainer.firstChild);
-        }
-    }
-
-    function selectAnswer(e) {
-        const selectedBtn = e.target;
-        const isCorrect = selectedBtn.dataset.correct === "true";
-        
-        if (isCorrect) {
-            selectedBtn.classList.add("correct");
-            score++;
-        } else {
-            selectedBtn.classList.add("wrong");
-        }
-
-        // Блокуємо інші кнопки та показуємо правильну відповідь
-        Array.from(optionsContainer.children).forEach(button => {
-            if (button.dataset.correct === "true") {
-                button.classList.add("correct");
-            }
-            button.disabled = true;
-        });
-
-        nextBtn.style.display = "block";
-    }
-
-    function nextQuestion() {
-        currentIdx++;
-        if (currentIdx < quizData.length) {
-            showQuestion();
-        } else {
-            showResults();
-        }
-    }
-
-    function showResults() {
-        resetState();
-        progressBar.style.width = "100%";
-        
-        // Розрахунок оцінки за 12-бальною системою НУШ
-        const nushGrade = Math.round((score / quizData.length) * 12);
-        
-        document.getElementById("quiz-content").innerHTML = `
-            <div class="result-screen">
-                <h2>Тест завершено!</h2>
-                <p>Правильних відповідей: <strong>${score} з ${quizData.length}</strong></p>
-                <div class="score-badge">${nushGrade}</div>
-                <p>Ваша оцінка за 12-бальною системою НУШ</p>
-                <button class="restart-btn" onclick="location.reload()">Пройти знову</button>
-            </div>
-        `;
-    }
-
-    startQuiz();
-</script>
-
-</body>
-</html>
+`;
+}
