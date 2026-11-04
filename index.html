@@ -25,11 +25,12 @@
         }
         .quiz-card {
             background: #ffffff;
-            max-width: 650px;
+            max-width: 600px;
             width: 100%;
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
         }
         .progress-container {
             width: 100%;
@@ -104,55 +105,21 @@
             text-align: center;
         }
         .score-badge {
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: bold;
             color: var(--primary);
-            margin: 15px 0;
-        }
-        .analysis-container {
-            text-align: left;
-            margin-top: 30px;
-            border-top: 2px solid #e2e8f0;
-            padding-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .analysis-item {
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            background: #fdfdfd;
-            border-left: 4px solid #cbd5e1;
-        }
-        .analysis-item.correct-item {
-            border-left-color: var(--success);
-            background: #f0fdfa;
-        }
-        .analysis-item.wrong-item {
-            border-left-color: var(--error);
-            background: #fff5f5;
-        }
-        .analysis-q {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .analysis-ans {
-            font-size: 0.95rem;
+            margin: 20px 0;
         }
         .restart-btn {
-            background: var(--primary);
-            color: white;
+            background: #e2e8f0;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-top: 20px;
-            width: 100%;
+            font-weight: 500;
         }
         .restart-btn:hover {
-            background: #3b5c88;
+            background: #cbd5e1;
         }
     </style>
 </head>
@@ -172,106 +139,49 @@
 <script>
     const quizData = [
         {
-            question: "Що таке веб-сайт?",
+            question: "Що таке HTML?",
             answers: [
-                { text: "Сукупність веб-сторінок, пов'язаних за змістом та навігацією", correct: true },
-                { text: "Будь-який текстовий документ, створений на комп'ютері", correct: false },
-                { text: "Програма для перегляду сторінок в Інтернеті", correct: false }
-            ]
-        },
-        {
-            question: "Як називається комп'ютер, що постійно підключений до мережі та зберігає файли веб-сайту?",
-            answers: [
-                { text: "Браузер", correct: false },
-                { text: "Провайдер", correct: false },
-                { text: "Хост / Веб-сервер", correct: true }
-            ]
-        },
-        {
-            question: "Яка технологія ховається за абревіатурою HTML?",
-            answers: [
-                { text: "Мова програмування для серверних обчислень", correct: false },
                 { text: "Мова розмітки гіпертексту", correct: true },
-                { text: "Протокол безпечного передавання даних", correct: false }
+                { text: "Мова програмування для розрахунків", correct: false },
+                { text: "Графічний редактор для веб-дизайну", correct: false }
             ]
         },
         {
-            question: "За допомогою яких символів у HTML записуються команди (теги)?",
+            question: "За допомогою яких символів записуються теги в коді HTML?",
             answers: [
-                { text: "&lt; та &gt; (кутові дужки)", correct: true },
                 { text: "{ та } (фігурні дужки)", correct: false },
-                { text: "[ та ] (квадратні дужки)", correct: false }
+                { text: "[ та ] (квадратні дужки)", correct: false },
+                { text: "&lt; та &gt; (кутові дужки)", correct: true }
             ]
         },
         {
-            question: "Який тег є головним контейнером, всередині якого розміщується весь вміст веб-сторінки?",
+            question: "Який тег використовується для створення нового абзацу на веб-сторінці?",
             answers: [
-                { text: "&lt;head&gt;", correct: false },
-                { text: "&lt;html&gt;", correct: true },
+                { text: "&lt;p&gt;", correct: true },
+                { text: "&lt;br&gt;", correct: false },
                 { text: "&lt;title&gt;", correct: false }
             ]
         },
         {
-            question: "Який тег використовується для відображення основного видимого вмісту сторінки (текст, графіка)?",
+            question: "Який сервіс дозволяє безкоштовно створювати сайти без знання програмування у візуальному конструкторі?",
             answers: [
-                { text: "&lt;body&gt;", correct: true },
-                { text: "&lt;head&gt;", correct: false },
-                { text: "&lt;meta&gt;", correct: false }
-            ]
-        },
-        {
-            question: "Який тег відповідає за створення нового абзацу тексту?",
-            answers: [
-                { text: "&lt;br&gt;", correct: false },
-                { text: "&lt;h1&gt;", correct: false },
-                { text: "&lt;p&gt;", correct: true }
-            ]
-        },
-        {
-            question: "За допомогою якого тегу можна вставити гіперпосилання на інший ресурс?",
-            answers: [
-                { text: "&lt;a&gt;", correct: true },
-                { text: "&lt;link&gt;", correct: false },
-                { text: "&lt;img&gt;", correct: false }
-            ]
-        },
-        {
-            question: "Яка послуга надає користувачам місце на сервері для розміщення їхніх сайтів?",
-            answers: [
-                { text: "Домен", correct: false },
-                { text: "Хостинг", correct: true },
-                { text: "Адресація", correct: false }
-            ]
-        },
-        {
-            question: "Унікальне ім'я сайту в Інтернеті (наприклад, google.com) — це...",
-            answers: [
-                { text: "Доменне ім'я", correct: true },
-                { text: "Веб-сторінка", correct: false },
-                { text: "URL-адреса файлу", correct: false }
-            ]
-        },
-        {
-            question: "Яку назву має перший етап створення веб-сайту?",
-            answers: [
-                { text: "Публікація сайту", correct: false },
-                { text: "Верстка сторінок", correct: false },
-                { text: "Постановка завдання та проєктування (планування)", correct: true }
-            ]
-        },
-        {
-            question: "Який із сервісів є прикладом онлайн-конструктора сайтів (CMS без коду)?",
-            answers: [
-                { text: "Google Сайти (Google Sites)", correct: true },
                 { text: "Google Диск", correct: false },
-                { text: "Google Клас", correct: false }
+                { text: "Google Сайти (Google Sites)", correct: true },
+                { text: "Google Форми", correct: false }
+            ]
+        },
+        {
+            question: "Який тег є обов'язковим парним тегом контейнера всього HTML-документа?",
+            answers: [
+                { text: "&lt;body&gt;", correct: false },
+                { text: "&lt;html&gt;", correct: true },
+                { text: "&lt;head&gt;", correct: false }
             ]
         }
     ];
 
     let currentIdx = 0;
     let score = 0;
-    let userAnswers = [];
 
     const questionText = document.getElementById("question-text");
     const optionsContainer = document.getElementById("options-container");
@@ -281,8 +191,7 @@
     function startQuiz() {
         currentIdx = 0;
         score = 0;
-        userAnswers = [];
-        if (nextBtn) nextBtn.style.display = "none";
+        nextBtn.style.display = "none";
         showQuestion();
     }
 
@@ -291,77 +200,79 @@
         let currentQuestion = quizData[currentIdx];
         questionText.innerText = `${currentIdx + 1}. ${currentQuestion.question}`;
         
+        // Оновлення прогрес-бару
         progressBar.style.width = `${(currentIdx / quizData.length) * 100}%`;
 
         currentQuestion.answers.forEach(answer => {
             const button = document.createElement("button");
             button.innerHTML = answer.text;
             button.classList.add("option-btn");
-if (answer.correct) {
-button.dataset.correct = answer.correct;
-}
-button.addEventListener("click", selectAnswer);
-optionsContainer.appendChild(button);
-});
-}
-function resetState() {
-nextBtn.style.display = "none";
-while (optionsContainer.firstChild) {
-optionsContainer.removeChild(optionsContainer.firstChild);
-}
-}
-function selectAnswer(e) {
-const selectedBtn = e.target;
-const isCorrect = selectedBtn.dataset.correct === "true";
-userAnswers.push({
-question: quizData[currentIdx].question,
-selected: selectedBtn.innerHTML,
-correctAnswer: quizData[currentIdx].answers.find(a => a.correct).text,
-isCorrect: isCorrect
-});
-if (isCorrect) {
-selectedBtn.classList.add("correct");
-score++;
-} else {
-selectedBtn.classList.add("wrong");
-}
-Array.from(optionsContainer.children).forEach(button => {
-if (button.dataset.correct === "true") {
-button.classList.add("correct");
-}
-button.disabled = true;
-});
-nextBtn.style.display = "block";
-}
-function nextQuestion() {
-currentIdx++;
-if (currentIdx < quizData.length) {
-showQuestion();
-} else {
-showResults();
-}
-}
-function showResults() {
-resetState();
-progressBar.style.width = "100%";
-const nushGrade = score;
-let analysisHtml = "";
-userAnswers.forEach((ans, idx) => {
-const statusClass = ans.isCorrect ? "correct-item" : "wrong-item";
-const statusIcon = ans.isCorrect ? "✅" : "❌";
-analysisHtml += <div class="analysis-item ${statusClass}"> <div class="analysis-q">${idx + 1}. ${ans.question}</div> <div class="analysis-ans"> Ваша відповідь: <span>${ans.selected}</span> ${statusIcon}<br> ${!ans.isCorrect ?Правильна відповідь: ${ans.correctAnswer}: ''} </div> </div>;
-});
-document.getElementById("quiz-content").innerHTML = `
+            if (answer.correct) {
+                button.dataset.correct = answer.correct;
+            }
+            button.addEventListener("click", selectAnswer);
+            optionsContainer.appendChild(button);
+        });
+    }
 
-Тест завершено!
-Правильних відповідей: ${score} з ${quizData.length}
-${nushGrade}
-Ваша оцінка за 12-бальною системою НУШ
-Аналіз відповідей:
+    function resetState() {
+        nextBtn.style.display = "none";
+        while (optionsContainer.firstChild) {
+            optionsContainer.removeChild(optionsContainer.firstChild);
+        }
+    }
 
-${analysisHtml}
-Пройти знову
+    function selectAnswer(e) {
+        const selectedBtn = e.target;
+        const isCorrect = selectedBtn.dataset.correct === "true";
+        
+        if (isCorrect) {
+            selectedBtn.classList.add("correct");
+            score++;
+        } else {
+            selectedBtn.classList.add("wrong");
+        }
 
-`;
-}
-startQuiz();
+        // Блокуємо інші кнопки та показуємо правильну відповідь
+        Array.from(optionsContainer.children).forEach(button => {
+            if (button.dataset.correct === "true") {
+                button.classList.add("correct");
+            }
+            button.disabled = true;
+        });
+
+        nextBtn.style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < quizData.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        resetState();
+        progressBar.style.width = "100%";
+        
+        // Розрахунок оцінки за 12-бальною системою НУШ
+        const nushGrade = Math.round((score / quizData.length) * 12);
+        
+        document.getElementById("quiz-content").innerHTML = `
+            <div class="result-screen">
+                <h2>Тест завершено!</h2>
+                <p>Правильних відповідей: <strong>${score} з ${quizData.length}</strong></p>
+                <div class="score-badge">${nushGrade}</div>
+                <p>Ваша оцінка за 12-бальною системою НУШ</p>
+                <button class="restart-btn" onclick="location.reload()">Пройти знову</button>
+            </div>
+        `;
+    }
+
+    startQuiz();
+</script>
+
+</body>
+</html>
