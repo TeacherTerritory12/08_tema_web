@@ -188,7 +188,7 @@
         .analysis-ans {
             font-size: 0.9rem;
             color: var(--text-muted);
-            line-line-height: 1.4;
+            line-height: 1.4;
         }
         .analysis-ans strong {
             color: #34d399;
@@ -203,24 +203,21 @@
     </div>
     
     <div id="quiz-content">
-        <!-- Стартовий екран реєстрації імені -->
         <div class="quiz-header">
-            <h1>Квест: Опрацювання текстових даних</h1>
-            <p>Й. Ривкінд, НУШ 8 клас • Тема: Створення та публікація веб-ресурсів</p>
+            <h1>Квест: Створення та публікація веб-ресурсів</h1>
+            <p>Й. Ривкінд, НУШ 8 клас • Інтерактивне тестування</p>
         </div>
         <div class="input-group">
-            <label for="student-name">Введіть ваше Прізвище та Ім'я (українською мовою):</label>
+            <label for="student-name">Введіть ваше Прізвище та Ім'я:</label>
             <input type="text" id="student-name" placeholder="Наприклад: Шевченко Тарас">
         </div>
         <button class="main-btn" onclick="validateAndStart()">Розпочати квест</button>
     </div>
 </div>
-
 <script>
-    // НАЛАШТУВАННЯ GOOGLE ФОРМИ (Вставте свої значення сюди)
     const GOOGLE_FORM_URL = "https://google.com"; 
-    const NAME_ENTRY_ID = "entry.111111111";   // ID поля для Імені
-    const SCORE_ENTRY_ID = "entry.222222222";  // ID поля для Оцінки
+    const NAME_ENTRY_ID = "entry.478427886";   
+    const SCORE_ENTRY_ID = "entry.1193998476";
 
     const quizData = [
         {
@@ -296,117 +293,151 @@
             ]
         },
         {
-question: "Унікальне ім'я сайту в Інтернеті (наприклад, google.com) — це...",
-answers: [
-{ text: "Доменне ім'я", correct: true },
-{ text: "Веб-сторінка", correct: false },
-{ text: "URL-адреса файлу", correct: false }
-]
-},
-{
-question: "Яку назву має перший етап створення веб-сайту?",
-answers: [
-{ text: "Публікація сайту", correct: false },
-{ text: "Верстка сторінок", correct: false },
-{ text: "Постановка завдання та проєктування (планування)", correct: true }
-]
-},
-{
-question: "Який із сервісів є прикладом онлайн-конструктора сайтів (CMS без коду)?",
-answers: [
-{ text: "Google Сайти (Google Sites)", correct: true },
-{ text: "Google Диск", correct: false },
-{ text: "Google Клас", correct: false }
-]
-}
-];
-let studentName = "";
-let currentIdx = 0;
-let score = 0;
-let userAnswers = [];
-function validateAndStart() {
-const nameInput = document.getElementById("student-name");
-studentName = nameInput.value.trim();
-if (studentName.length < 3) {
-alert("Будь ласка, введіть коректне Прізвище та Ім'я!");
-return;
-}
-document.getElementById("progress-area").style.display = "block";
-showQuestion();
-}
-function showQuestion() {
-const container = document.getElementById("quiz-content");
-let currentQuestion = quizData[currentIdx];
-document.getElementById("progress").style.width = ${(currentIdx / quizData.length) * 100}%;
-let optionsHtml = "";
-currentQuestion.answers.forEach((answer, index) => {
-optionsHtml += <button class="option-btn" onclick="selectAnswer(this, ${answer.correct}, '${answer.text.replace(/'/g, "\\'")}')">${answer.text}</button>;
-});
-container.innerHTML = <h2>${currentIdx + 1}. ${currentQuestion.question}</h2> <div class="options">${optionsHtml}</div> <button id="next-btn" class="main-btn" style="display:none;" onclick="nextQuestion()">Далі →</button>;
-}
-function selectAnswer(btn, isCorrect, text) {
-userAnswers.push({
-question: quizData[currentIdx].question,
-selected: text,
-correctAnswer: quizData[currentIdx].answers.find(a => a.correct).text,
-isCorrect: isCorrect
-});
-if (isCorrect) {
-btn.classList.add("correct");
-score++;
-} else {
-btn.classList.add("wrong");
-}
-const options = document.querySelectorAll(".option-btn");
-options.forEach(button => {
-button.disabled = true;
-// Показуємо правильний варіант, якщо учень помилився
-if (button.textContent === quizData[currentIdx].answers.find(a => a.correct).text) {
-button.classList.add("correct");
-}
-});
-document.getElementById("next-btn").style.display = "block";
-}
-function nextQuestion() {
-currentIdx++;
-if (currentIdx < quizData.length) {
-showQuestion();
-} else {
-showResults();
-}
-}
-function sendToGoogleSheets(name, finalScore) {
-// Приховане відправлення даних форми методом POST
-const formData = new FormData();
-formData.append(NAME_ENTRY_ID, name);
-formData.append(SCORE_ENTRY_ID, finalScore);
-fetch(GOOGLE_FORM_URL, {
-method: "POST",
-mode: "no-cors",
-body: formData
-}).catch(err => console.log("Data sent indicator"));
-}
-function showResults() {
-document.getElementById("progress").style.width = "100%";
-const container = document.getElementById("quiz-content");
-// Автоматичне збереження результатів у фоні
-sendToGoogleSheets(studentName, score);
-let analysisHtml = "";
-userAnswers.forEach((ans, idx) => {
-const statusClass = ans.isCorrect ? "correct-item" : "wrong-item";
-const statusIcon = ans.isCorrect ? "✅" : "❌";
-analysisHtml += <div class="analysis-item ${statusClass}"> <div class="analysis-q">${idx + 1}. ${ans.question}</div> <div class="analysis-ans"> Ваша відповідь: <span>${ans.selected}</span> ${statusIcon}<br> ${!ans.isCorrect ?Правильна відповідь: ${ans.correctAnswer}: ''} </div> </div>;
-});
-container.innerHTML = `
+            question: "Унікальне ім'я сайту в Інтернеті (наприклад, google.com) — це...",
+            answers: [
+                { text: "Доменне ім'я", correct: true },
+                { text: "Веб-сторінка", correct: false },
+                { text: "URL-адреса файлу", correct: false }
+            ]
+        },
+        {
+            question: "Яку назву має перший етап створення веб-сайту?",
+            answers: [
+                { text: "Публікація сайту", correct: false },
+                { text: "Верстка сторінок", correct: false },
+                { text: "Постановка завдання та проєктування (планування)", correct: true }
+            ]
+        },
+        {
+            question: "Який із сервісів є прикладом онлайн-конструктора сайтів (CMS без коду)?",
+            answers: [
+                { text: "Google Сайти (Google Sites)", correct: true },
+                { text: "Google Диск", correct: false },
+                { text: "Google Клас", correct: false }
+            ]
+        }
+    ];
 
-Квест завершено, ${studentName}!
-Ваш результат успішно зафіксовано в системі.
-${score}
-Балів отримано (за 12-бальною системою НУШ)
-Аналіз помилок та відповідей:
+    let studentName = "";
+    let currentIdx = 0;
+    let score = 0;
+    let userAnswers = [];
 
-${analysisHtml}
-Пройти знову
+    function validateAndStart() {
+        const nameInput = document.getElementById("student-name");
+        studentName = nameInput.value.trim();
+        
+        if (studentName.length < 3) {
+            alert("Будь ласка, введіть ваше Прізвище та Ім'я!");
+            return;
+        }
+        
+        document.getElementById("progress-area").style.display = "block";
+        showQuestion();
+    }
 
-`;
-}
+    function showQuestion() {
+        const container = document.getElementById("quiz-content");
+        let currentQuestion = quizData[currentIdx];
+        
+        document.getElementById("progress").style.width = `${(currentIdx / quizData.length) * 100}%`;
+
+        let optionsHtml = "";
+        currentQuestion.answers.forEach((answer) => {
+            optionsHtml += `<button class="option-btn" onclick="selectAnswer(this, ${answer.correct}, '${answer.text.replace(/'/g, "\\'")}')">${answer.text}</button>`;
+        });
+
+        container.innerHTML = `
+            <h2>${currentIdx + 1}. ${currentQuestion.question}</h2>
+            <div class="options">${optionsHtml}</div>
+            <button id="next-btn" class="main-btn" style="display:none;" onclick="nextQuestion()">Далі →</button>
+        `;
+    }
+
+    function selectAnswer(btn, isCorrect, text) {
+        userAnswers.push({
+            question: quizData[currentIdx].question,
+            selected: text,
+            correctAnswer: quizData[currentIdx].answers.find(a => a.correct).text,
+            isCorrect: isCorrect
+        });
+
+        if (isCorrect) {
+            btn.classList.add("correct");
+            score++;
+        } else {
+            btn.classList.add("wrong");
+        }
+
+        const options = document.querySelectorAll(".option-btn");
+        options.forEach(button => {
+            button.disabled = true;
+            if (button.textContent === quizData[currentIdx].answers.find(a => a.correct).text) {
+                button.classList.add("correct");
+            }
+        });
+
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < quizData.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function sendToGoogleSheets(name, finalScore) {
+        const formData = new FormData();
+        formData.append(NAME_ENTRY_ID, name);
+        formData.append(SCORE_ENTRY_ID, finalScore);
+
+        fetch(GOOGLE_FORM_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: formData
+        }).catch(err => console.log("Data sent"));
+    }
+
+    function showResults() {
+        document.getElementById("progress").style.width = "100%";
+        const container = document.getElementById("quiz-content");
+        
+        sendToGoogleSheets(studentName, score);
+        
+        let analysisHtml = "";
+        userAnswers.forEach((ans, idx) => {
+            const statusClass = ans.isCorrect ? "correct-item" : "wrong-item";
+            const statusIcon = ans.isCorrect ? "✅" : "❌";
+            analysisHtml += `
+                <div class="analysis-item ${statusClass}">
+                    <div class="analysis-q">${idx + 1}. ${ans.question}</div>
+                    <div class="analysis-ans">
+                        Ваша відповідь: <span>${ans.selected}</span> ${statusIcon}<br>
+                        ${!ans.isCorrect ? `Правильна відповідь: <strong>${ans.correctAnswer}</strong>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = `
+            <div class="result-screen">
+                <h2>Квест завершено, ${studentName}!</h2>
+                <p style="color: var(--text-muted); margin-top: 5px;">Ваш результат успішно надіслано в Google Таблицю.</p>
+                <div class="score-badge">${score}</div>
+                <p>Бал за 12-бальною системою НУШ</p>
+                
+                <h3 style="margin-top: 35px; text-align: left; color: var(--primary);">Аналіз відповідей та помилок:</h3>
+                <div class="analysis-container">
+                    ${analysisHtml}
+                </div>
+                
+                <button class="main-btn" onclick="location.reload()">Пройти знову</button>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
